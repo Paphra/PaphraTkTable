@@ -1,20 +1,66 @@
-"""
-This module creates a table form according to the specifications
-from the designing developer
+""" This module creates a table according to the specifications
+The table is entirely scrollable and allows selection of a row
+and visibly seeing the selected row using the highlight of grey
+color, but the color can be changed easily.
+Deleting of a row is supported by this table using the appropriate
+functions and methods and once a row is deleted, another is
+automatically selected in the place of the deleted row
+Scrolling can be done by the mouse wheel or the Scrollbar for both
+the vertical and the horizontal
+
+Note:
+-----
+Python Dictionaries are used for the rows. Each row must be
+a python dictionary for this table to work well. Uniform or
+constant keys for these dictionaries must be used
+
+Imports:
+--------
+:tk - The main tkinter module
+:messagebox - For the confirmation of the deletion of a row
+:ttk - The themed tkinter
+
+Procedure of How to use the Python Table
+----------------------------------------
+:- Make a list of all the keys for the python dictionaries. The
+keys which represent the individual columns in the row
+
+:- Make a list of dictionaries for the titles. Each title
+dictionary is a single column and this dictionary represents
+the column header. The dictionary must contain the following
+keys:
+    :- text:     this is text for the column header
+    :- width:    the integer for the width of the column
+    :- type:     the type of the widget to use for holding the
+        data in the column. The type is represented by a single
+        letter in the string data type
+        :'l' - for the Label widget
+        :'c' - for the Combobox widget
+
+:- Make a list of dictionaries, each dictionary representing the
+row. Each row must be having all the keys specified in the list
+of keys.
+
+:- Initialize the class called 'Table' passing the neccessary arguments
+:- Call 'add_rows()' passing the neccessary arguments
+
+:- For deleting, select a row and call 'delete_row()'
+:- You can also get the currently selected row by calling the
+method 'get_selected()'
 """
 
-import tkinter as tk  # importing tkinter as tk for easy reference
-from threading import Thread
-from tkinter import messagebox as msg, ttk  # importing the themed tkinter module
+import tkinter as tk
+from tkinter import messagebox as msg, ttk
 
 
 def _shade(wl_, color=None):
-    """
-    Shading a given row when selection occurs
+    """ Shading a given row when selection occurs with the
+    given color.
     :type wl_: list
-    :type color: str
     :param wl_: list of widgets on the row
-    :param color: color to be used
+    :type color: str
+    :param color: color to be used. If it is None, then,
+        shading occurs.
     :return: None
     """
     if color is None:
@@ -25,17 +71,17 @@ def _shade(wl_, color=None):
 
 
 def _sep_work(cont, lb_list):
-    """
-    Create and Situate separators on a given container between
+    """ Create and Situate separators on a given container between
     widgets
     :type lb_list: list
-    :type cont: any
-    :param cont: container widget
     :param lb_list: list of widgets to be separated using the
-    separators
+        separators
+    :type cont: any container; e.g Frame, LabelFrame, etc
+    :param cont: container widget
     :return: None
     """
-    _col = 0
+    _col = 0                            # First column is 0
+    # For situating the separators on the container
     for _c in range(len(lb_list) + 1):
         if _c > 0:
             _col = _col + 2
@@ -47,10 +93,19 @@ def _sep_work(cont, lb_list):
                              padx=2, pady=2)
 
 
-def check_rows(rows_list: list, titles: list, _keys_: list):
-    """
-    Checking the rows to see if they are okay
-    :return:
+def check_rows(rows_list, titles, _keys_):
+    """ Checking the list of rows to see if they contain any rows.
+    If the list is empty, then a row is created to show that
+    nothing is found in the list of rows.
+    :type rows_list: list
+    :param rows_list: list of rows in the dictionary form to
+        be put in the table
+    :type titles: list
+    :param titles: list of dictionaries for the titles which
+        represent the column headers.
+    :type _keys_: list
+    :param _keys_: list of strings for the keys of the titles.
+    :return: list - of dictionaries for the rows
     """
     if len(rows_list) == 0:
         no_rows = {}
@@ -64,30 +119,36 @@ def check_rows(rows_list: list, titles: list, _keys_: list):
 
 
 class Table:
-    """
-    This class creates the table form as specified by the one
-    designing the table. A master of any kind is passed in at
-    initialization. Then a method called create is called to
-    create the table. This method takes arguments: list of
-    dictionaries for the titles with their text, width and type
-    of the widget for each row cell. e.g
-    {'text': 'Name of something', 'width': 30, 'type': 'l'}
-    'l' is for ttk.Label(), 'c' is for ttk.Combobox(), 'e' is
-    for ttk.Entry()
+    """ Creates the table form as specified. A container e.g Frame,
+    is passed at initialization. Then a method is called to create
+    the table.
     """
 
-    def __init__(self, master, _keys_=None, titles=None, width=None,
+    def __init__(self, container, _keys_=None, titles=None, width=None,
                  height=None):
+        """ Initializes the Table creation
+        :type container: any, e.g ttk.Frame(), ttk.LabelFrame(), etc
+        :param container: the container to hold the table structure
+        :type _keys_: list
+        :param _keys_: list of strings for the keys of the titles
+        :type titles: list
+        :param titles: list of dictionaries for the column headers.
+            The headers with their widths and the types of the data
+            for the columns, e.g c for the Combobox, l for the Label
+        :type width: int
+        :param width: integer for the width of the table
+        :type height: int
+        :param height: integer for the height of the Table
+        :return: None
         """
-        Initializes the Table creation
-        :type master: any
-        :param master: the container to hold the table structure
-        """
-        self.host = ttk.Frame(master=master)
+        self.host = ttk.Frame(master=container)
         self.title_pane = ttk.Frame(self.host)
+
         # the main canvas that is scrollable
         self.list_canvas = tk.Canvas(self.host)
         self._keys_ = _keys_
+
+        # if the keys list id None, then a mock is created
         if self._keys_ is None:
             self._keys_ = ['col1', 'col2', 'col3', 'col4']
         self._width = width
@@ -112,10 +173,15 @@ class Table:
         self.selected_w = None
         self.selected_row = None
         self.mock_rows = []
+
+        # set up mock data in case the table is being run in the
+        # stand alone mode
         self.work_on_mock()
         self.rows = []
 
-        # self._make_rows(50)
+        # create the main table which involves making the
+        # column headers, fixing the width of the columns and the
+        # height of the table
         self._create()
 
     def work_on_mock(self):
@@ -131,6 +197,7 @@ class Table:
                     'col4': 'value of col 4 row ' + str(i + 1)})
 
     def _create(self):
+        """ Creates the Table """
 
         # situating the host on the master
         self.host.grid(column=0, row=0, sticky='NSE')
@@ -162,15 +229,20 @@ class Table:
                                    width=self._width,
                                    height=self._height)
 
-        v_scr.grid(column=(self.col_span - 1), row=1, sticky='NS',
-                   rowspan=3)
+        v_scr.grid(column=(self.col_span - 1), row=1, sticky='NS', rowspan=3)
 
         v_scr['command'] = self.list_canvas.yview
         self._mouse_wheel([self.list_canvas, self.host])
 
     def _mouse_wheel(self, widgets):
+        """ Performing the scrolling using the Mouse Wheel
+        :type widgets: list
+        :param widgets: list of widgets that make up the row
+        :return: None
+        """
 
         def _wheel(event):
+            """ Movement of the wheel """
             move = int(event.delta / 60)
             self.list_canvas.yview_scroll(move, tk.UNITS)
 
@@ -178,8 +250,7 @@ class Table:
             widget.bind('<MouseWheel>', _wheel, True)
 
     def _titles_works(self):
-        """
-        This method works on the titles. Positions the and sets the
+        """ Positions the titles as column headers and sets the
         column widths
         :return: None
         """
@@ -195,11 +266,10 @@ class Table:
         return True
 
     def add_rows(self, rows_list=None):
-        """
-        Add given rows on to the canvas of the table
+        """ Add given rows on to the canvas of the table
         :type rows_list: list
         :param rows_list: list of rows[dictionaries] to be placed on
-        the canvas
+            the canvas
         :return: None
         """
         self.rows_list = rows_list
@@ -235,8 +305,7 @@ class Table:
                 _sep_work(_llb, lb_list)
 
                 sep11 = ttk.Separator(_llb, orient='horizontal')
-                sep11.grid(column=0, row=2, sticky='WE',
-                           columnspan=self.col_span)
+                sep11.grid(column=0, row=2, sticky='WE', columnspan=self.col_span)
 
                 if i > 0:
                     y_cord = y_cord + 26
@@ -251,11 +320,16 @@ class Table:
         Thread(target=works(), daemon=True).start()
 
     def _make_row_widgets(self, _llb, lb_list, _i):
-        """
-        Make the widgets for the row
+        """ Make the widgets for the row. This is done using the keys
+        list and the titles dictionaries
+        :tyoe _llb: Label
         :param _llb: label, the row main widget
-        :param lb_list: list of widgets. This is where the widgets are
-        put
+        :type lb_list: list
+        :param lb_list: list of widgets. This is where the manufactured
+            widgets are put
+        :type _i: int
+        :param _i: integer for the position or row number being worked
+            upon
         :return: None
         """
         for key in self._keys_:
@@ -278,15 +352,13 @@ class Table:
             lb_list.append(_w)
 
     def _click(self, event=None):
-        """
-        Work on the clicking event on a given row
-        :param event: event of button
+        """ Performing the Clicking event on a given row
+        :type event: event
+        :param event: event of button clicking
         :return: None
         """
+        parent_name = event.widget.winfo_parent()
 
-        self._selection(event.widget.winfo_parent())
-
-    def _selection(self, parent_name):
         self.sel_ind = None
         self.selected_row = None
 
@@ -312,6 +384,16 @@ class Table:
             counts = counts + 1
 
     def _select(self, widget):
+        """ Selecting the entire row of widgets that make up the row
+        of the table. This is the row that has been clicked.
+        This is also aimed at deselecting the previous row before
+        before the new one is selected
+        :type widget: Frame
+        :param widget: frame containing the row widgets. The parent
+            for the row
+        :return: None
+        """
+
         _wch = widget.winfo_children()
         selected_txt = _wch[1]['text']
         if selected_txt != 'Nothing is Found!':
@@ -325,9 +407,24 @@ class Table:
             self.selected_row = None
             self.selected_w = None
 
-    def _select_new_after_delete(self):
+    def delete_row(self):
+        """ Delete a selected row
+        :return: None or dict - Previously Selected row
         """
-        Perform the selection after the deleting action
+        if self.selected_row is not None and \
+            msg.askquestion('Itory: Deletion Confirmation',
+                            'Confirm Deletion?') == u'yes':
+                self.selected_w.destroy()
+                self.rows_list.remove(self.selected_row)
+                prev_selected = self.selected_row
+                self.add_rows(check_rows(self.rows_list, self.titles,
+                                         self._keys_))
+                self._select_new_after_delete()
+                return prev_selected
+        return None
+
+    def _select_new_after_delete(self):
+        """ Perform the selection after the deleting action
         :return: None
         """
         counts = 0
@@ -344,26 +441,8 @@ class Table:
                 break
             counts = counts + 1
 
-    def delete_row(self):
-        """
-        Delete a selected row
-        :return: None
-        """
-        if self.selected_row is not None and \
-            msg.askquestion('Itory: Deletion Confirmation',
-                            'Confirm Deletion?') == u'yes':
-                self.selected_w.destroy()
-                self.rows_list.remove(self.selected_row)
-                prev_selected = self.selected_row
-                self.add_rows(check_rows(self.rows_list, self.titles,
-                                         self._keys_))
-                self._select_new_after_delete()
-                return prev_selected
-        return None
-
     def get_selected(self):
-        """
-        Get the the text on the first widget of the selected row
+        """ Get the the text on the first widget of the selected row
         :return: dict row
         """
         return self.selected_row
