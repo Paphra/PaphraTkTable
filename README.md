@@ -1,5 +1,6 @@
 # Python Table by Paphra
 ------------------------
+
 This module creates a table according to the specifications.
 The table is entirely scrollable and allows selection of a row
 and visibly seeing the selected row using the highlight of grey
@@ -9,13 +10,16 @@ functions and methods and once a row is deleted, another is
 automatically selected in the place of the deleted row
 Scrolling can be done by the mouse wheel or the Scrollbar for both
 the vertical and the horizontal
+
 --------
 
 ## Note:
 --------
+
 Python Dictionaries are used for the rows. Each row must be
 a python dictionary for this table to work well. Uniform or
 constant keys for these dictionaries must be used
+
 -------------
 
 ## Imports:
@@ -23,6 +27,7 @@ constant keys for these dictionaries must be used
 1. tk - The main tkinter module
 2. messagebox - For the confirmation of the deletion of a row
 3. ttk - The themed tkinter
+4. Thread - For background tasks
 -------------
 
 ## Procedure of How to use the Python Table

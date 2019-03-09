@@ -17,6 +17,7 @@ constant keys for these dictionaries must be used
 Imports:
 --------
 :tk - The main tkinter module
+:Thread - For loading and working in background
 :messagebox - For the confirmation of the deletion of a row
 :ttk - The themed tkinter
 
@@ -50,6 +51,7 @@ method 'get_selected()'
 """
 
 import tkinter as tk
+from threading import Thread
 from tkinter import messagebox as msg, ttk
 
 
