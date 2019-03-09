@@ -57,4 +57,9 @@ of keys.
 6. For deleting, select a row and call 'delete_row()'
 7. You can also get the currently selected row by calling the
 method 'get_selected()'
+
+# installing
+**pip install paphra-table**
+**from paphra_table import table**
+**tb = table.Table(master)**
 ----------------------
