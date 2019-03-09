@@ -1,0 +1,9 @@
+README.md
+setup.py
+paphra_table/__init__.py
+paphra_table/__main__.py
+paphra_table/table.py
+paphra_table.egg-info/PKG-INFO
+paphra_table.egg-info/SOURCES.txt
+paphra_table.egg-info/dependency_links.txt
+paphra_table.egg-info/top_level.txt

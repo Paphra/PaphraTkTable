@@ -1,28 +1,22 @@
-from distutils.core import setup
+import setuptools
 
-setup(
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     # Application name:
-    name="Python Table By Paphra",
-
-    # Version number (initial):
-    version="0.1.0",
-
-    # Application author details:
+    name="paphra-table",
+    version="1.0.1",
     author="Epaphradito Lugayavu",
     author_email="paphra.me@gmail.com",
-
-    # Packages
-    packages=["src"],
-
-    # Include additional files into the package
-    include_package_data=True,
-
-    # Details
-    url="http://pypi.python.org/pypi/PythonTable_v010/",
-
-    #
+    url="http://github.com/Paphra/PythonTable/",
     license="LICENSE.txt",
-    description="Python Table Creation. Best for rows in Dictionaries.",
-    long_description=open("README.txt").read(),
+    description="Python Table. Best for rows in Dictionaries.",
+    long_description=long_description,
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+    ],
 
 )
