@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     # Application name:
     name="paphra-table",
-    version="1.0.2",
+    version="1.0.3",
     author="Epaphradito Lugayavu",
     author_email="paphra.me@gmail.com",
     url="http://github.com/Paphra/PythonTable/",

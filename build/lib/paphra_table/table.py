@@ -377,7 +377,7 @@ class Table:
 
         for win_ in _children:
             w_name = win_.winfo_name()
-            if parent_name[3] == w_name:
+            if parent_name[len(parent_name)-1] == w_name:
                 self._select(win_)
                 self.sel_ind = counts
 
