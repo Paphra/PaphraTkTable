@@ -1,7 +1,7 @@
 # Python Table by Paphra
 ------------------------
 
-This module creates a table according to the specifications.
+: This module creates a table according to the specifications.
 The table is entirely scrollable and allows selection of a row
 and visibly seeing the selected row using the highlight of grey
 color, but the color can be changed easily.
@@ -15,8 +15,7 @@ the vertical and the horizontal
 
 ## Note:
 --------
-
-Python Dictionaries are used for the rows. Each row must be
+: Python Dictionaries are used for the rows. Each row must be
 a python dictionary for this table to work well. Uniform or
 constant keys for these dictionaries must be used
 
@@ -59,7 +58,10 @@ of keys.
 method 'get_selected()'
 
 # installing
-**pip install paphra-table**
-**from paphra_table import table**
-**tb = table.Table(master)**
+~~~~
+pip install paphra-table
+from paphra_table import table
+
+tb = table.Table(master)         # any master can work
+~~~~
 ----------------------

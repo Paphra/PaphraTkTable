@@ -6,12 +6,12 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     # Application name:
     name="paphra-table",
-    version="1.0.1",
+    version="1.0.2",
     author="Epaphradito Lugayavu",
     author_email="paphra.me@gmail.com",
     url="http://github.com/Paphra/PythonTable/",
     license="LICENSE.txt",
-    description="Python Table. Best for rows in Dictionaries.",
+    description="Python Table. Designed to give the user the control over tables in Python",
     long_description=long_description,
     packages=setuptools.find_packages(),
     classifiers=[

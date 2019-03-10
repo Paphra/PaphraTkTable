@@ -318,6 +318,7 @@ class Table:
                 for _ww in _llb.winfo_children():
                     _ww.bind('<ButtonRelease-1>', self._click, True)
                     self._mouse_wheel([_ww])
+                self.selected_w = None
 
         Thread(target=works(), daemon=True).start()
 
@@ -359,7 +360,7 @@ class Table:
         :param event: event of button clicking
         :return: None
         """
-        parent_name = event.widget.winfo_parent()
+        parent_name = event.widget.winfo_parent().split('.')
 
         self.sel_ind = None
         self.selected_row = None
@@ -376,7 +377,7 @@ class Table:
 
         for win_ in _children:
             w_name = win_.winfo_name()
-            if str(w_name) in str(parent_name):
+            if parent_name[3] == w_name:
                 self._select(win_)
                 self.sel_ind = counts
 
