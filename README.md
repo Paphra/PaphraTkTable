@@ -1,7 +1,7 @@
-# Python Table by Paphra
+# Python Tkinter Table by Paphra
 ------------------------
 
-: This module creates a table according to the specifications.
+: This module creates a tkinter table according to the specifications.
 The table is entirely scrollable and allows selection of a row
 and visibly seeing the selected row using the highlight of grey
 color, but the color can be changed easily.
@@ -59,9 +59,9 @@ method 'get_selected()'
 
 # installing
 ~~~~
-pip install paphra-table
-from paphra_table import table
+pip install paphra-tktable
+from paphra_tktable import table
 
-tb = table.Table(master)         # any master can work
+tb = table.Table(master)
 ~~~~
 ----------------------
